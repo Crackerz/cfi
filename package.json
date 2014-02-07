@@ -1,0 +1,14 @@
+{
+		"name":"cfi",
+		"version": "v0.1-alpha",
+		"description": "A validation tool for the weekly codingforinterviews' problem",
+		"author":"William Blankenship",
+		"dependencies": {
+
+		},
+		"keywords":["codingforinterviews","validator"],
+		//"homepage":"http://www.github.com/",
+		//"bugs":{
+		//	"url":"http://www.github.com/",
+		//	"email":"william.jblankenship@gmail.com",
+}
