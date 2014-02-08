@@ -1,5 +1,6 @@
-var repo_url = "git@github.com:Marak/colors.js.git";
+var repo_url = "git@github.com:Crackerz/cfi_tests.git";
 var repo_path = process.env["HOME"]+"/.cfi";
+
 (function () {
 		//Logic for executing the file
 		var args = process.argv.splice(2);
@@ -18,7 +19,14 @@ var repo_path = process.env["HOME"]+"/.cfi";
 
 //List all possible tests
 function list() {
-		console.log("list");
+		console.log("\nAvailable Practice Problems: \n");
+		var fs = require('fs');
+		var tests = fs.readdirSync(repo_path);
+		tests.forEach(function(test) {
+			if(test.charAt(0)!=".")
+				console.log(test);
+		});
+		console.log();
 }
 
 //test runs a specific test on a specified command
@@ -57,9 +65,7 @@ function maintainRepo(callback) {
 
 	var exec = require('child_process').exec;
 	var child = exec("git init", function(error, stdout,stderr) {
-		execResult(error,stdout,stderr);
 		var child = exec("git remote add origin "+repo_url,function(error,stdout,stderr) {
-			execResult(error,stdout,stderr);
 			var child = exec("git pull origin master",function(error,stdout,stderr) {
 				if(!execResult(error,stdout,stderr)) {
 					console.log("exec error: "+error);
@@ -71,7 +77,7 @@ function maintainRepo(callback) {
 					//TODO: handle the unlikely event that we can't get back to where we started
 				}
 				callback();
-			})
+			});
 		});
 	});
 }
