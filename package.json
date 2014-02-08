@@ -6,5 +6,10 @@
 		"dependencies": {
 
 		},
-		"keywords":["codingforinterviews","validator"]
+		"keywords":["codingforinterviews","validator"],
+		"repository":{
+				"type":"git",
+				"url":"http://github.com/Crackerz/cfi.git"
+		},
+		"os" : ["linux"]
 }
