@@ -1,6 +1,13 @@
 //maintainRepo ensures our repo is being maintained and is updated
 exports.maintainRepo = function (dir,url,callback) {
-	//TODO: Ensure git is installed
+	var exec = require('child_process').exec;
+	//Ensure git is installed
+	var child = exec('command -v git',function(error,stdout,stderr) {
+		if(error) {
+			console.log("GIT IS NOT INSTALLED");
+			process.exit(1);
+		}
+	});
 
 	//File system maintenence
 	var fs = require('fs');
@@ -15,7 +22,6 @@ exports.maintainRepo = function (dir,url,callback) {
 	}
 	
 	//TODO: Handle errors for git. May not have permission for the specified directory
-	var exec = require('child_process').exec;
 	var child = exec('git init '+dir, function(error, stdout,stderr) {
 		var child = exec('git -C "'+dir+'" remote add origin '+url,function(error,stdout,stderr) {
 			var child = exec('git -C "'+dir+'" pull origin master',function(error,stdout,stderr) {
