@@ -7,6 +7,7 @@ var repo_path = process.env['HOME']+'/.cfi';
 		var git = require('./git.js');
 		switch(args[0]) {
 		case 'list':
+				var list = require('./list.js').list(repo_path);
 				git.maintainRepo(repo_path,repo_url,list);
 				break;
 		case 'test':
@@ -18,20 +19,8 @@ var repo_path = process.env['HOME']+'/.cfi';
 		}
 }).call(this);
 
-//List all possible tests
-function list() {
-		console.log('\nAvailable Practice Problems: \n');
-		var fs = require('fs');
-		var tests = fs.readdirSync(repo_path);
-		tests.forEach(function(test) {
-			if(test.charAt(0)!='.')
-				console.log(test);
-		});
-		console.log();
-}
-
 //test runs a specific test on a specified command
-function test(name,command) {
+function test(dir,name,command) {
 
 }
 

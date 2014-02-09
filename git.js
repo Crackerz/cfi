@@ -4,7 +4,7 @@ exports.maintainRepo = function (dir,url,callback) {
 	//Ensure git is installed
 	var child = exec('command -v git',function(error,stdout,stderr) {
 		if(error) {
-			console.log("GIT IS NOT INSTALLED");
+			console.error('GIT IS NOT INSTALLED');
 			process.exit(1);
 		}
 	});
@@ -15,9 +15,7 @@ exports.maintainRepo = function (dir,url,callback) {
 		fs.mkdirSync(dir);
 	} catch(error) {
 		if(!error.code=='EEXIST') {
-			//Something is wrong and we can't access our directory! WHAT DO?!?!
-			//TODO: Handle error 
-			console.log(error.message);
+			console.error('Could not access ~/.cfi: '+error.message);
 		}
 	}
 	
