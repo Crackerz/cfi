@@ -1,29 +1,30 @@
-var repo_url = "git@github.com:Crackerz/cfi_tests.git";
-var repo_path = process.env["HOME"]+"/.cfi";
+var repo_url = 'git@github.com:Crackerz/cfi_tests.git';
+var repo_path = process.env['HOME']+'/.cfi';
 
 (function () {
 		//Logic for executing the file
 		var args = process.argv.splice(2);
+		var git = require('./git.js');
 		switch(args[0]) {
-		case "list":
-				maintainRepo(list);
+		case 'list':
+				git.maintainRepo(repo_path,repo_url,list);
 				break;
-		case "test":
-				maintainRepo(test());
+		case 'test':
+				git.maintainRepo(repo_path,repo_url,test);
 				break;
 		default:
-				console.log("other");
+				console.log('other');
 				break;
 		}
 }).call(this);
 
 //List all possible tests
 function list() {
-		console.log("\nAvailable Practice Problems: \n");
+		console.log('\nAvailable Practice Problems: \n');
 		var fs = require('fs');
 		var tests = fs.readdirSync(repo_path);
 		tests.forEach(function(test) {
-			if(test.charAt(0)!=".")
+			if(test.charAt(0)!='.')
 				console.log(test);
 		});
 		console.log();
@@ -37,54 +38,4 @@ function test(name,command) {
 //help prints help information to stdout
 function help() {
 
-}
-
-//maintainRepo ensures our repo is being maintained and is updated
-function maintainRepo(callback) {
-	//TODO: Ensure git is installed
-
-	//File system maintenence
-	var fs = require('fs');
-	try {
-		fs.mkdirSync(repo_path);
-	} catch(error) {
-		if(!error.code=="EEXIST") {
-			//Something is wrong and we can't access our directory! WHAT DO?!?!
-			//TODO: Handle error 
-			console.log(error.message);
-		}
-	}
-	
-	var cwd = process.cwd();
-	try {
-		process.chdir(repo_path);
-	} catch(error) {
-		console.log("Could not change directory to git repo!");
-		//TODO: handle error
-	}
-
-	var exec = require('child_process').exec;
-	var child = exec("git init", function(error, stdout,stderr) {
-		var child = exec("git remote add origin "+repo_url,function(error,stdout,stderr) {
-			var child = exec("git pull origin master",function(error,stdout,stderr) {
-				if(!execResult(error,stdout,stderr)) {
-					console.log("exec error: "+error);
-				}
-				try {
-					process.chdir(cwd);
-				} catch(error) {
-					console.log("Could not change directory back to original cwd!");
-					//TODO: handle the unlikely event that we can't get back to where we started
-				}
-				callback();
-			});
-		});
-	});
-}
-
-function execResult(error, stdout,stderr) {
-	if(error!=null) {
-		return false;
-	}
-	return true;
 }
