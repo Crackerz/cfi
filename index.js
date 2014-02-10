@@ -1,4 +1,4 @@
-var repo_url = 'git@github.com:Crackerz/cfi_tests.git';
+var repo_url = 'git@github.com:codingforinterviews/cfi_tests.git';
 var repo_path = process.env['HOME']+'/.cfi';
 
 (function () {
