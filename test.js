@@ -30,5 +30,31 @@ exports.test = function(dir,name,command) {
 				}
 		}
 		console.log(files);
+		
+		//Start workers to test the files
+		for(i=0;i<files.length;i++) {
+				var exec = require('child_process').exec;
+				var str = command+' < "'+dir+'/'+name+'/'+files[i]+'.input"';
+				console.log(str);
+				var child = exec(str, function(error,stdout,stderr) {
+					console.log("stdout: "+stdout);	
+				});
+		}
+	}
+}
+
+function runTest(id,command) {
+	return function(error,input) {
+		if(error) {
+				console.log("Unable to open input for "+id);
+				return;
+		}
+		console.log("running process: ",id);
+		var exec = require('child_process').exec;
+		var child = exec("exec "+command, function(error,stdout,stderr) {
+			console.log("stdout "+id+": "+stdout);	
+		});
+		console.log("writing to stdin: ",id);
+		child.stdin.write(input);
 	}
 }
