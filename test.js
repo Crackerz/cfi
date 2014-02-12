@@ -1,6 +1,7 @@
 //test runs a specific test on a specified command
 exports.test = function(dir,name,command) {
 	return function () {
+		console.log("\nRunning test "+name+" on "+command+"\n");
 		var fs = require('fs');
 		var files;
 		try {
@@ -29,32 +30,26 @@ exports.test = function(dir,name,command) {
 					files[i] = files[i].split(".input")[0];
 				}
 		}
-		console.log(files);
 		
 		//Start workers to test the files
 		for(i=0;i<files.length;i++) {
 				var exec = require('child_process').exec;
-				var str = command+' < "'+dir+'/'+name+'/'+files[i]+'.input"';
-				console.log(str);
-				var child = exec(str, function(error,stdout,stderr) {
-					console.log("stdout: "+stdout);	
-				});
+				var str = command+' < "'+dir+'/'+name+'/'+files[i]+'.input" | diff --ignore-all-space "'+dir+'/'+name+'/'+files[i]+'.output" -';
+				exec(str,execComplete(files[i]));
 		}
 	}
 }
 
-function runTest(id,command) {
-	return function(error,input) {
-		if(error) {
-				console.log("Unable to open input for "+id);
-				return;
+function execComplete(id) {
+	return function(error,stdout,stderr) {
+		code = error || 0;
+		switch(code) {
+			case 0:
+				console.log("Test "+id+" PASSED!");
+				break;
+			default:
+				console.log("Test "+id+" FAILED!");
+				break;
 		}
-		console.log("running process: ",id);
-		var exec = require('child_process').exec;
-		var child = exec("exec "+command, function(error,stdout,stderr) {
-			console.log("stdout "+id+": "+stdout);	
-		});
-		console.log("writing to stdin: ",id);
-		child.stdin.write(input);
 	}
 }
