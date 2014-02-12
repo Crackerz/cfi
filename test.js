@@ -18,7 +18,17 @@ exports.test = function(dir,name,command) {
 				process.exit(1);
 			}
 		}
+
 		//iterate through list of files removing all output files. Match input to output one by one then run tests async.
 		//Use regex and splice maybe to do the test.
+		var filename = /[0-9]*.output/;
+		for(i=0;i<files.length;i++) {
+				if(filename.test(files[i])) {
+					files.splice(i--,1);
+				} else {
+					files[i] = files[i].split(".input")[0];
+				}
+		}
+		console.log(files);
 	}
 }
