@@ -22,7 +22,7 @@ exports.maintainRepo = function (dir,url,callback) {
 	//TODO: Handle errors for git. May not have permission for the specified directory
 	var child = exec('git init '+dir, function(error, stdout,stderr) {
 		var child = exec('git -C "'+dir+'" remote add origin '+url,function(error,stdout,stderr) {
-			var child = exec('git -C "'+dir+'" reset --hard && git -C "'+dir+'" pull origin master',function(error,stdout,stderr) {
+			var child = exec('git --git-dir="'+dir+'/.git" --work-tree="'+dir+'" reset --hard && git --git-dir="'+dir+'/.git" --work-tree="'+dir+'" pull origin master',function(error,stdout,stderr) {
 				if(!execResult(error,stdout,stderr)) {
 					console.log('exec error: '+error);
 				}
